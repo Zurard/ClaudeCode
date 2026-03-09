@@ -80,4 +80,7 @@ async function main() {
   console.log(response.choices[0].message.content);
 }
 
-main();
+main().catch(error => {
+  console.error(error);
+  process.exit(1);
+});
