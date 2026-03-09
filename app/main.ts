@@ -66,6 +66,7 @@ async function main() {
     const filePath = FunctionArgs.file_path;
     const fileContent = await ReadFile(filePath);
     // process.stdout.write(filePath);
+    console.log(fileContent);
     process.stdout.write(fileContent);
   }
 
@@ -77,10 +78,7 @@ async function main() {
   console.error("Logs from your program will appear here!");
 
   // TODO: Uncomment the lines below to pass the first stage
-  console.log(response.choices[0].message.content);
+  // console.log(response.choices[0].message.content);
 }
 
-main().catch(error => {
-  console.error(error);
-  process.exit(1);
-});
+main();
