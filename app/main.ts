@@ -66,7 +66,7 @@ async function main() {
     const filePath = FunctionArgs.file_path;
     const fileContent = await ReadFile(filePath);
     // process.stdout.write(filePath);
-    console.log(fileContent);
+    // console.log(fileContent);
     process.stdout.write(fileContent);
   }
 
