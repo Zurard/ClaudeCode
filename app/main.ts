@@ -65,7 +65,7 @@ async function main() {
     const FunctionArgs = JSON.parse(toolCalls[0].function.arguments);
     const filePath = FunctionArgs.file_path;
     const fileContent = await ReadFile(filePath);
-
+    process.stdout.write(filePath);
     process.stdout.write(fileContent);
   }
 
