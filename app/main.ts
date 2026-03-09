@@ -61,13 +61,17 @@ async function main() {
   }
 
   // now we need to extract the funciton name and the arguments from the tool call and execute the function and get the result
-  if ('function' in toolCalls[0] && toolCalls[0].function.name !== "ReadFile") {
+  if (toolCalls[0].type === "function" && toolCalls[0].function.name === "ReadFile") {
     const FunctionArgs = JSON.parse(toolCalls[0].function.arguments);
     const filePath = FunctionArgs.file_path;
     const fileContent = await ReadFile(filePath);
 
     process.stdout.write(fileContent);
   }
+
+
+
+
 
   // You can use print statements as follows for debugging, they'll be visible when running tests.
   console.error("Logs from your program will appear here!");
