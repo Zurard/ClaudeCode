@@ -49,28 +49,27 @@ async function main() {
   
   });
 
-  if (!response.choices || response.choices.length === 0) {
-    throw new Error("no choices in response");
-  }
  
   // now we need to check if the model has called any tool or not 
   // if the model has called any tool then we need to execute that tool and pass the result back to the model and get the final response from the model
   const toolCalls= response.choices[0].message.tool_calls
-  if (!toolCalls || toolCalls.length === 0) {
-   throw new Error("no tool calls in response");
-  }
+ 
+  if (toolCalls && toolCalls.length > 0) {
+    // now we need to extract the funciton name and the arguments from the tool call and execute the function and get the result
 
-  // now we need to extract the funciton name and the arguments from the tool call and execute the function and get the result
-  if (toolCalls[0].type === "function" && toolCalls[0].function.name === "ReadFile") {
+        if (toolCalls[0].type === "function" && toolCalls[0].function.name === "ReadFile") {
     const FunctionArgs = JSON.parse(toolCalls[0].function.arguments);
     const filePath = FunctionArgs.file_path;
     const fileContent = await ReadFile(filePath);
     // process.stdout.write(filePath);
-    // console.log(fileContent);
     process.stdout.write(fileContent);
   }
+  }
+  else {
+    console.log(response.choices[0].message.content);
+  }
 
-
+  
 
 
 
