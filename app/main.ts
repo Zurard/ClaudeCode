@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import { ReadFile } from "./read";
 
 async function main() {
   const [, , flag, prompt] = process.argv;
@@ -20,10 +21,17 @@ async function main() {
 
   const response = await client.chat.completions.create({
     model: "anthropic/claude-haiku-4.5",
-    messages: [{ role: "user", content: prompt }],
+    messages: [
+      { 
+      role: "user", 
+      content: prompt,
+       }
+    ],
+    // the llms have the tools  parameter which tell is what all tools it has access to and how to use them, so that it can call them when needed
     tools : [
       {
       "type": "function",
+      //advertising the read file function to the model so that it can use it when needed
       "function" : {
         "name" : "ReadFile",
         "description": "Read and return the contents of the file",
@@ -38,11 +46,33 @@ async function main() {
     }
   }
   ]
+  
   });
 
   if (!response.choices || response.choices.length === 0) {
     throw new Error("no choices in response");
   }
+ 
+  // now we need to check if the model has called any tool or not 
+  // if the model has called any tool then we need to execute that tool and pass the result back to the model and get the final response from the model
+  const toolCalls= response.choices[0].message.tool_calls
+  if (!toolCalls || toolCalls.length === 0) {
+   throw new Error("no tool calls in response");
+  }
+
+  // now we need to extract the funciton name and the arguments from the tool call and execute the function and get the result
+    const toolCall = toolCalls[0]
+    const funcitonName = toolCall.function.name
+    const args = toolCall.function.argument
+    if (funcitonName === "ReadFile"){
+      const file_path = args.file_path
+      const content = await ReadFile(file_path)
+      console.log(content)
+  }
+
+
+
+
 
   // You can use print statements as follows for debugging, they'll be visible when running tests.
   console.error("Logs from your program will appear here!");
