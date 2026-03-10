@@ -2,7 +2,7 @@
 
 An intelligent TypeScript-based coding assistant that leverages Claude AI's function calling capabilities to autonomously read files and provide smart code insights. This project demonstrates how to build sophisticated AI agents with tool integration.
 
-## 🎯 Project Overview
+##  Project Overview
 
 This application showcases an **AI agent loop** where Claude AI can:
 - Receive user prompts and code-related queries
@@ -11,23 +11,23 @@ This application showcases an **AI agent loop** where Claude AI can:
 - Maintain conversation context across multiple tool calls
 - Provide intelligent, context-aware responses
 
-## 🚀 Key Features
+##  Key Features
 
-✅ **LLM Integration** - Seamless integration with Claude AI via OpenRouter API  
-✅ **Function Calling** - AI agents autonomously invoke tools when needed  
-✅ **Multi-turn Conversations** - Agent loops that maintain context across multiple exchanges  
-✅ **File Operations** - Safe file reading with dynamic path handling  
-✅ **Error Handling** - Robust validation and error management  
-✅ **TypeScript** - Type-safe implementation with full type checking  
+**LLM Integration** - Seamless integration with Claude AI via OpenRouter API  
+ **Function Calling** - AI agents autonomously invoke tools when needed  
+ **Multi-turn Conversations** - Agent loops that maintain context across multiple exchanges  
+ **File Operations** - Safe file reading with dynamic path handling  
+ **Error Handling** - Robust validation and error management  
+ **TypeScript** - Type-safe implementation with full type checking  
 
-## 💻 Tech Stack
+##  Tech Stack
 
 - **Runtime**: TypeScript (Node.js)
 - **LLM**: Claude Haiku 4.5 via OpenRouter API
 - **API Client**: OpenAI SDK (OpenAI-compatible)
 - **Environment**: TypeScript + Bun
 
-## 🔄 How It Works
+##  How It Works
 
 ### Agent Loop Flow:
 1. **User Input** → Send prompt to Claude with available tools
@@ -39,7 +39,7 @@ This application showcases an **AI agent loop** where Claude AI can:
    - Provides final response
 6. **Output** → Return final response to user
 
-## 🛠️ Getting Started
+##  Getting Started
 
 ### Prerequisites
 - Node.js / Bun (1.3+)
@@ -64,7 +64,7 @@ bun install
 
 The AI will automatically read the file and provide an analysis.
 
-## 📚 Learning Outcomes
+##  Learning Outcomes
 
 This project demonstrates:
 - Building AI agents with **autonomous tool calling**
@@ -73,15 +73,14 @@ This project demonstrates:
 - Proper error handling and validation
 - TypeScript best practices for AI applications
 
-## 📝 Architecture
+##  Architecture
 
 ```
 app/
 ├── main.ts      # Core agent logic and API integration
-├── read.ts      # File reading tool implementation
-```
 
-## 🎓 Key Concepts Implemented
+
+## Key Concepts Implemented
 
 - **Tool Definition** - Describing tools to the LLM
 - **Function Calling** - AI autonomously invoking tools
