@@ -36,7 +36,28 @@ const tools = [
         required: ["file_path"],
       },
     },
+  },
+  {
+  type: "function",
+  function: {
+    name: "WriteFile",
+    description: "Write content to a file",
+    parameters: {
+      type: "object",
+      required: ["file_path", "content"],
+      properties: {
+        file_path: {
+          "type": "string",
+          "description": "The path of the file to write to"
+        },
+        content: {
+          "type": "string",
+          "description": "The content to write to the file"
+        }
+      }
+    }
   }
+}
 ] 
 
 
@@ -81,7 +102,18 @@ messages.push({
             content: fileContent,
           });
         }
+           if (functionName === "WriteFile") {
+               const filePath = args.file_path;
+               const content = args.content;
+               fs.writeFileSync(filePath, content, "utf-8");
+               messages.push({
+                 role: "tool",
+                 tool_call_id: toolCall.id,
+                 content: `File written successfully to ${filePath}`,
+               });
+           }
       }
+   
       continue;
     }
 
