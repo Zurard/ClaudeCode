@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import fs from "fs";
+import { ChildProcess } from "child_process";
 
 async function main() {
   const [, , flag, prompt] = process.argv;
@@ -53,6 +54,23 @@ const tools = [
         content: {
           "type": "string",
           "description": "The content to write to the file"
+        }
+      }
+    }
+  }
+},
+{
+  type: "function",
+  function: {
+    name: "Bash",
+    description: "Execute a shell command",
+    parameters: {
+      type: "object",
+      required: ["command"],
+      properties: {
+        command: {
+          type: "string",
+          description: "The command to execute"
         }
       }
     }
@@ -112,6 +130,20 @@ messages.push({
                  content: `File written successfully to ${filePath}`,
                });
            }
+            if (functionName === "Bash") {
+              const command = args.command;
+              const execSync = require("child_process").execSync;
+              try {
+                const output = execSync(command, { encoding: "utf-8" });
+                messages.push({
+                  role: "tool",
+                  tool_call_id: toolCall.id,
+                  content: output,
+                });
+              } catch (error) {
+                console.error("Error executing bash command:", error);
+              }
+            }
       }
    
       continue;
