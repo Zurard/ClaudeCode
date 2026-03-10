@@ -19,7 +19,19 @@ async function main() {
     baseURL: baseURL,
   });
 
-  const response = await client.chat.completions.create({
+  
+
+  /// ---------------Stage 2 implementation ----------------
+  // now we need to check if the model has called any tool or not 
+  // if the model has called any tool then we need to execute that tool and pass the result back to the model and get the final response from the model
+
+const messages  = [{
+  "role" : "user",
+  "content" : prompt
+}]
+
+while (true ){
+const response = await client.chat.completions.create({
     model: "anthropic/claude-haiku-4.5",
     messages: [
       { 
@@ -37,7 +49,7 @@ async function main() {
         "description": "Read and return the contents of the file",
         "parameters": {
           "type" : "object",
-          "porperties" : {
+          "properties" : {
             "file_path" :{ "type": "string"  , "description" : "the path to the file to read "},
             
         },
@@ -46,13 +58,9 @@ async function main() {
     }
   }
   ]
-  
   });
 
- 
-  // now we need to check if the model has called any tool or not 
-  // if the model has called any tool then we need to execute that tool and pass the result back to the model and get the final response from the model
-  const toolCalls= response.choices[0].message.tool_calls
+const toolCalls= response.choices[0].message.tool_calls
  
   if (toolCalls && toolCalls.length > 0) {
     // now we need to extract the funciton name and the arguments from the tool call and execute the function and get the result
@@ -61,6 +69,16 @@ async function main() {
     const FunctionArgs = JSON.parse(toolCalls[0].function.arguments);
     const filePath = FunctionArgs.file_path;
     const fileContent = await ReadFile(filePath);
+
+    messages.push({
+     role : "assistant",
+      content : response.choices[0].message.content ?? "",
+    })
+    messages.push({
+      role : "tool",
+      content : fileContent,
+  
+    })
     // process.stdout.write(filePath);
     process.stdout.write(fileContent);
   }
@@ -69,15 +87,14 @@ async function main() {
     console.log(response.choices[0].message.content);
   }
 
-  
-
-
-
   // You can use print statements as follows for debugging, they'll be visible when running tests.
   console.error("Logs from your program will appear here!");
 
   // TODO: Uncomment the lines below to pass the first stage
   // console.log(response.choices[0].message.content);
+
+}
+
 }
 
 main();
